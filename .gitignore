@@ -1,15 +1,20 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Ignore the virtual environment directory
+# Virtual environment
 venv/
 
-# Ignore compiled Python files
-__pycache__/
-
-# Ignore environment files
+# Environment variables
 .env
 
-# Ignore log files
+# Logs and temporary files
 *.log
-
-# Ignore temporary files
 *.tmp
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VS Code settings
+.vscode/
