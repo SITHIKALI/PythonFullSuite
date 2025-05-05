@@ -3154,3 +3154,663 @@ The file is now closed.
 3. **Context Managers**: Use `with` to safely handle file operations.
 4. **Error Handling**: Use `try`-`except` blocks to catch and handle errors gracefully.
 
+To interact with APIs in Python, you commonly use the `requests` library, which provides a simple and intuitive way to send HTTP requests and handle responses. Here's a step-by-step guide:
+
+---
+
+## **Working with APIs in Python**
+
+### 1. **Install the `requests` Library**
+If you don't already have the `requests` library installed, you can install it using:
+```bash
+pip install requests
+```
+
+---
+
+### 2. **Basic HTTP Requests**
+The `requests` library supports various HTTP methods like `GET`, `POST`, `PUT`, and `DELETE`.
+
+#### Example: Basic `GET` Request
+```python
+import requests
+
+response = requests.get("https://api.example.com/data")
+print(response.status_code)  # HTTP status code (e.g., 200 for success)
+print(response.json())       # Parse response as JSON
+```
+
+---
+
+### 3. **Sending Parameters in Requests**
+You can include query parameters in your request using the `params` keyword.
+
+#### Example:
+```python
+url = "https://api.example.com/search"
+params = {"query": "python", "page": 1}
+
+response = requests.get(url, params=params)
+print(response.url)  # Full URL with query parameters
+print(response.json())
+```
+
+---
+
+### 4. **Making POST Requests**
+To send data to an API, use the `POST` method with the `data` or `json` keyword.
+
+#### Example:
+```python
+url = "https://api.example.com/create"
+data = {"name": "John", "age": 30}
+
+response = requests.post(url, json=data)  # Use 'json=' for JSON payloads
+print(response.status_code)
+print(response.json())
+```
+
+---
+
+### 5. **Working with Headers**
+Some APIs require additional headers for authentication, content type, etc.
+
+#### Example:
+```python
+url = "https://api.example.com/protected"
+headers = {"Authorization": "Bearer YOUR_ACCESS_TOKEN"}
+
+response = requests.get(url, headers=headers)
+print(response.status_code)
+print(response.json())
+```
+
+---
+
+### 6. **Error Handling**
+Always handle errors gracefully to avoid crashes.
+
+#### Example:
+```python
+try:
+    response = requests.get("https://api.example.com/data")
+    response.raise_for_status()  # Raise HTTPError for bad responses (4xx/5xx)
+    print(response.json())
+except requests.exceptions.HTTPError as err:
+    print(f"HTTP error occurred: {err}")
+except Exception as err:
+    print(f"An error occurred: {err}")
+```
+
+---
+
+### 7. **Working with APIs that Require Authentication**
+Many APIs require authentication through methods like API keys, OAuth tokens, or basic authentication.
+
+#### Example: API Key
+```python
+url = "https://api.example.com/data"
+headers = {"x-api-key": "YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+---
+
+### 8. **Interacting with JSON Responses**
+API responses are often in JSON format. Use Python's dictionary methods to extract data.
+
+#### Example:
+```python
+response = requests.get("https://api.example.com/data")
+data = response.json()
+
+for item in data["results"]:
+    print(item["name"], item["value"])
+```
+
+---
+
+### 9. **Rate Limiting**
+Some APIs limit the number of requests you can make. Always check the API documentation for rate limits.
+
+#### Example:
+Respect rate limits by adding delays between requests:
+```python
+import time
+
+for i in range(5):
+    response = requests.get("https://api.example.com/data")
+    print(response.json())
+    time.sleep(1)  # Delay for 1 second
+```
+
+---
+
+### 10. **API Documentation**
+Always refer to the API's documentation for:
+- Endpoints and their methods (`GET`, `POST`, etc.).
+- Required headers and parameters.
+- Authentication mechanisms.
+- Rate limits and error codes.
+
+---
+
+
+
+---
+
+# What Is an API?
+
+An API (Application Programming Interface) is:
+
+> A set of functions and procedures allowing the creation of applications that access the features or data of an operating system, application, or other service.
+
+APIs provide a standardized way to access information across the web, enabling communication between clients and servers. Most modern APIs are **RESTful**, meaning they follow a common set of paradigms and practices.
+
+---
+
+## **Key Concepts**
+
+### **Authentication**
+- Some APIs require authentication to use their services.
+- Authentication methods are beyond the scope of this guide, but many APIs are available for free and require no authentication.
+
+---
+
+### **Rate Limiting**
+- Even if authentication isn’t required, APIs often implement **rate limiting** to prevent overloading their servers.
+- For example:
+  - The GitHub API allows **50 unauthenticated requests per hour per IP**.
+  - The GitHub Search API allows **10 unauthenticated requests per hour**.
+
+---
+
+### **Free APIs**
+- Free APIs are publicly available and don’t require payment, but they may lack guaranteed uptime or maintenance.
+- If a free API becomes unavailable, you can explore alternatives in the [public-apis repository](https://github.com/public-apis/public-apis).
+
+---
+
+
+
+---
+
+# Working with APIs
+
+APIs (Application Programming Interfaces) allow you to interact with servers and services over the web by sending requests and receiving responses. This section provides an introduction to the basic concepts of working with APIs.
+
+---
+
+## **Requests and Responses**
+
+APIs work on the **request-response cycle**:
+- You send a **request** to the server.
+- The server responds with:
+  - An **HTTP Status Code** (indicating success or failure).
+  - Optionally, **data** in a specific format (e.g., JSON).
+
+---
+
+## **HTTP Methods**
+
+HTTP methods (or verbs) specify the type of operation you want to perform:
+- **GET**: Retrieve a resource from the server.
+- **POST**: Create a new resource on the server with the data you provide.
+- **PUT**: Edit or update an existing resource.
+- **DELETE**: Remove a resource from the server.
+
+---
+
+## **Headers, Body, and Parameters**
+
+You can include extra information in your requests:
+- **Headers**: Metadata about the request (e.g., authentication tokens, content type).
+- **Body**: Data to send with the request (e.g., for POST or PUT).
+- **URL Parameters**: Key-value pairs added to the URL.  
+  Example:  
+  `https://example.com?var1=foo&var2=bar`
+
+---
+
+## **Response Types**
+
+API responses are typically returned in various formats, with **JSON** being the most common.
+
+### Example JSON Response:
+```json
+[
+    {
+        "name": "New York",
+        "pop": 8550405
+    },
+    {
+        "name": "Los Angeles",
+        "pop": 3971883
+    },
+    {
+        "name": "Chicago",
+        "pop": 2720546
+    },
+    {
+        "name": "Houston",
+        "pop": 2296224
+    },
+    {
+        "name": "Philadelphia",
+        "pop": 1567442
+    }
+]
+```
+
+JSON is widely used because it is easy to read, write, and generate in various programming languages.
+
+---
+
+## **HTTP Status Codes**
+
+HTTP Status Codes indicate whether your request was successful or why it failed. Here are the common categories:
+
+| **Category** | **Description**                     | **Examples**                                      |
+|--------------|-------------------------------------|--------------------------------------------------|
+| **1xx**      | Informational                      | Rarely used.                                    |
+| **2xx**      | Success                            | `200 OK`: Standard success response.            |
+|              |                                     | `201 CREATED`: Resource created successfully.   |
+| **3xx**      | Redirection                        | `301 Moved Permanently`: Resource moved to a new URL. |
+| **4xx**      | Client Error                       | `404 Not Found`: Resource not found.            |
+| **5xx**      | Server Error                       | `500 Internal Server Error`: Server encountered an issue. |
+
+---
+
+## **Fun Fact: I'm a Teapot (HTTP Status Code 418)**
+
+HTTP Status Code `418` was introduced as an April Fool’s joke in 1998, known as the **Hyper Text Coffee Pot Control Protocol (HTCPCP)**. It signifies:  
+> "I’m a Teapot."  
+
+You can "brew" coffee by sending the `BREW` command to servers supporting this protocol. 🫖
+
+---
+
+## **Authentication**
+
+Some APIs require authentication to use their services. While authentication methods are beyond the scope of this section, you can explore the following resources for more information:
+- [Zapier - Authentication Part 1](https://zapier.com) and [Part 2](https://zapier.com) by Brian Cooksey.
+- [Requests Library Authentication Documentation](https://docs.python-requests.org/en/master/user/authentication/).
+
+---
+
+## **Rate Limiting**
+
+APIs often enforce **rate limits** to prevent overloading servers. 
+- Example: The GitHub API allows:
+  - **50 unauthenticated requests per hour per IP** for general requests.
+  - **10 unauthenticated requests per hour** for their Search API.
+
+For more free APIs to explore, check out the [public-apis repository](https://github.com/public-apis/public-apis).
+
+---
+
+
+---
+
+# Using the `requests` Library
+
+The `requests` library is an external Python library designed to simplify working with HTTP requests. It was developed by Kenneth Reitz and is often described as "HTTP for humans." It has become one of the most popular Python libraries thanks to its ease of use.
+
+---
+
+## **Installing the `requests` Library**
+
+If you haven’t installed the `requests` library yet, you can do so using `pip`:
+```bash
+python -m pip install requests
+```
+
+---
+
+## **Our First Request Using `requests`**
+
+Let’s make a request to the [Shibe API](http://shibe.online) to get a random dog picture.
+
+**File: `shibe.py`**
+```python
+# Import the requests library
+import requests
+
+# Define the API URL
+api_url = "http://shibe.online/api/shibes?count=1"
+
+# Make a GET request to the API
+response = requests.get(api_url)
+
+# Check the response status code
+print(f"Response status code is: {response.status_code}")
+
+# Parse the response as JSON
+response_json = response.json()
+
+# Print the resulting list of URLs
+print(response_json)
+```
+
+**Run the script:**
+```bash
+(env) $ python shibe.py
+Response status code is: 200
+['https://cdn.shibe.online/shibes/28d7c372ea7defdb315ef845285d4ac3906ccea4.jpg']
+```
+
+---
+
+## **Dealing with Errors**
+
+HTTP status codes are a good indicator of whether your request was successful.
+
+### Example: Handling a 404 Error
+```python
+# Make a request to a non-existent endpoint
+bad_response = requests.get("http://shibe.online/api/german-shepards")
+
+# Print the status code
+print(f"Bad Response Status Code is: {bad_response.status_code}")
+```
+
+**Output:**
+```bash
+Bad Response Status Code is: 404
+```
+
+---
+
+## **Passing Parameters**
+
+You can pass query parameters to the API using the `params` argument.
+
+### Example: Requesting Multiple Dog Pictures
+```python
+# Base API URL
+api_url = "http://shibe.online/api/shibes"
+
+# Define query parameters
+params = {
+   "count": 10  # Request 10 dog pictures
+}
+
+# Make the GET request with parameters
+api_response = requests.get(api_url, params=params)
+
+# Print the status code
+print(f"Shibe API Response Status Code is: {api_response.status_code}")
+
+# Parse the response as JSON
+json_data = api_response.json()
+
+# Print the list of image URLs
+print("Here is a list of URLs for dog pictures:")
+for url in json_data:
+    print(f"\t {url}")
+```
+
+**Run the script:**
+```bash
+(env) $ python shibe.py
+Shibe API Response Status Code is: 200
+Here is a list of URLs for dog pictures:
+     https://cdn.shibe.online/shibes/dfb2af0b2ac1f057750da32f0ea0e154afc160cf.jpg
+     https://cdn.shibe.online/shibes/4989daad2c805ec62b0fb09a80280ba2262f1b08.jpg
+     ...
+```
+
+---
+
+## **More About `requests`**
+
+To dive deeper into the `requests` library, check out the [quick start documentation](https://docs.python-requests.org/en/latest/user/quickstart/).
+
+---
+
+
+
+
+---
+
+# Practice: Bringing It All Together
+
+Let’s review the concepts we covered today by building a program that interacts with the GitHub API to retrieve the top repositories sorted by the number of stars.
+
+---
+
+## **Objective**
+
+Create a program, `day_one.py`, that:
+1. Fetches repositories with more than 50,000 stars, filtered by specific programming languages.
+2. Sorts repositories by the number of stars in descending order.
+3. Handles errors gracefully and allows customization of search parameters.
+
+---
+
+## **Setup**
+
+1. Install the `requests` library if you haven’t already:
+   ```bash
+   python -m pip install requests
+   ```
+
+2. Create a file named `day_one.py`.
+
+---
+
+## **Step 1: Making the Initial Request**
+
+Start by creating a function to make a `GET` request to the GitHub search API. Use the `if __name__ == "__main__"` block to ensure the program runs only when executed directly.
+
+**Code Example:**
+```python
+import requests
+
+def repos_with_most_stars():
+    gh_api_repo_search_url = "https://api.github.com/search/repositories"
+    response = requests.get(gh_api_repo_search_url)
+    print(f"Response status code is: {response.status_code}")
+
+if __name__ == "__main__":
+    repos_with_most_stars()
+```
+
+---
+
+## **Step 2: Adding Query Parameters**
+
+Add a query string to search for repositories with more than 50,000 stars. Update the request to include this query using the `params` argument.
+
+**Code Example:**
+```python
+def repos_with_most_stars():
+    gh_api_repo_search_url = "https://api.github.com/search/repositories"
+    params = {
+        "q": "stars:>50000"
+    }
+    response = requests.get(gh_api_repo_search_url, params=params)
+    print(f"Response status code is: {response.status_code}")
+    print(f"Response data: {response.json()}")
+```
+
+---
+
+## **Step 3: Parsing the Response**
+
+Parse the JSON response to extract useful information like repository name, stars, and programming language. Loop through the `items` list in the response.
+
+**Code Example:**
+```python
+def repos_with_most_stars():
+    gh_api_repo_search_url = "https://api.github.com/search/repositories"
+    params = {
+        "q": "stars:>50000"
+    }
+    response = requests.get(gh_api_repo_search_url, params=params)
+    response_json = response.json()
+
+    for repo in response_json.get("items", []):
+        print(f"{repo['name']} - Stars: {repo['stargazers_count']} - Language: {repo['language']}")
+```
+
+---
+
+## **Step 4: Creating a Query Builder**
+
+To allow filtering by languages, create a helper function to dynamically construct the query string.
+
+**Code Example:**
+```python
+def create_query(languages, min_stars=50000):
+    query = f"stars:>{min_stars}"
+    for language in languages:
+        query += f"+language:{language}"
+    return query
+```
+
+---
+
+## **Step 5: Integrating the Query Builder**
+
+Update the `repos_with_most_stars` function to use the `create_query` function. Pass in a list of languages to filter the results.
+
+**Code Example:**
+```python
+def repos_with_most_stars(languages, sort="stars", order="desc"):
+    gh_api_repo_search_url = "https://api.github.com/search/repositories"
+    query = create_query(languages)
+    params = {
+        "q": query,
+        "sort": sort,
+        "order": order
+    }
+
+    response = requests.get(gh_api_repo_search_url, params=params)
+    response_json = response.json()
+
+    for repo in response_json.get("items", []):
+        print(f"{repo['name']} - Stars: {repo['stargazers_count']} - Language: {repo['language']}")
+
+if __name__ == "__main__":
+    repos_with_most_stars(["python", "javascript", "ruby"])
+```
+
+---
+
+## **Step 6: Adding Error Handling**
+
+Handle common errors such as hitting the API rate limit (`403`) or bad responses (any status code other than `200`).
+
+**Code Example:**
+```python
+def repos_with_most_stars(languages, sort="stars", order="desc"):
+    gh_api_repo_search_url = "https://api.github.com/search/repositories"
+    query = create_query(languages)
+    params = {
+        "q": query,
+        "sort": sort,
+        "order": order
+    }
+
+    response = requests.get(gh_api_repo_search_url, params=params)
+
+    if response.status_code == 403:
+        raise Exception("Rate limit exceeded. Try again later.")
+    elif response.status_code != 200:
+        raise Exception(f"Failed to fetch data: {response.status_code}")
+
+    response_json = response.json()
+
+    for repo in response_json.get("items", []):
+        print(f"{repo['name']} - Stars: {repo['stargazers_count']} - Language: {repo['language']}")
+
+if __name__ == "__main__":
+    repos_with_most_stars(["python", "javascript", "ruby"])
+```
+
+---
+
+## **Final Code**
+
+The final code includes:
+1. Dynamic query building.
+2. Sorting and ordering options as keyword arguments.
+3. Error handling for common API issues.
+
+**Final Code:**
+```python
+import requests
+
+def create_query(languages, min_stars=50000):
+    query = f"stars:>{min_stars}"
+    for language in languages:
+        query += f"+language:{language}"
+    return query
+
+def repos_with_most_stars(languages, sort="stars", order="desc"):
+    gh_api_repo_search_url = "https://api.github.com/search/repositories"
+    query = create_query(languages)
+    params = {
+        "q": query,
+        "sort": sort,
+        "order": order
+    }
+
+    response = requests.get(gh_api_repo_search_url, params=params)
+
+    if response.status_code == 403:
+        raise Exception("Rate limit exceeded. Try again later.")
+    elif response.status_code != 200:
+        raise Exception(f"Failed to fetch data: {response.status_code}")
+
+    response_json = response.json()
+
+    for repo in response_json.get("items", []):
+        print(f"{repo['name']} - Stars: {repo['stargazers_count']} - Language: {repo['language']}")
+
+if __name__ == "__main__":
+    repos_with_most_stars(["python", "javascript", "ruby"])
+```
+
+---
+
+## **Key Takeaways**
+- Use the `requests` library to interact with APIs.
+- Dynamically construct query strings to filter API results.
+- Handle errors gracefully to avoid crashes.
+- Use default keyword arguments for flexibility.
+
+
+
+---
+
+# Wrapping Up
+
+Today, we've taken a whirlwind tour of the Python programming language, covering everything from basic syntax to working with libraries, APIs, and handling errors.
+
+---
+
+## **What’s Next?**
+
+During **Day 2**, we’ll put this knowledge into practice by writing real programs. Be ready to apply what you’ve learned to solve more complex problems and build useful tools.
+
+---
+
+## **Source Control**
+
+To make the most of your Python projects, it’s highly recommended to use **source control**. Here’s why and how:
+
+### Why Use Source Control?
+- **Track Changes**: Source control tools like Git let you track every change you make to your project.
+- **Commit Often**: Commit early and often to keep a history of your progress.
+- **Collaboration**: GitHub makes it easy to collaborate with others on projects.
+
+### Getting Started with GitHub
+- If you’re new to Git or GitHub, check out the [Git In-depth Frontend Masters class](https://frontendmasters.com/) for a comprehensive introduction.
+- For Python projects, use a proper `.gitignore` file to exclude unnecessary files (e.g., virtual environments, compiled files, etc.). GitHub provides a [Python `.gitignore` template](https://github.com/github/gitignore/blob/main/Python.gitignore) that you can use.
+
+---
+
