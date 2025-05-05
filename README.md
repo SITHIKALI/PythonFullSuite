@@ -1239,7 +1239,7 @@ Key Takeaways
     Be cautious when differentiating between None and empty sequences, as both evaluate to False.
 
 
-Here’s the **Comparisons** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -1372,7 +1372,7 @@ False
 
 ---
 
-Here’s the **Boolean Operators (and, or, not)** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -1524,7 +1524,6 @@ None
 ```
 
 ---
-Here’s the **Practice: Boolean Logic and Comparisons** section formatted for inclusion in your README file:
 
 ---
 
@@ -1642,7 +1641,7 @@ You can combine multiple boolean operators to test complex assumptions. Use pare
 
 ---
 
-Here’s the **Loops and Control Statements** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -1651,7 +1650,7 @@ Here’s the **Loops and Control Statements** section formatted for inclusion in
 Loops and control statements allow us to control the logical flow of our program. These structures enable us to repeat actions, make decisions, and manage the execution of code based on specific conditions.
 
 ---
-Here’s the **Looping in Python** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -1797,7 +1796,7 @@ For a deeper understanding of Pythonic looping, watch Raymond Hettinger’s talk
 
 ---
 
-Here’s the **if, else, elif** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -1986,7 +1985,7 @@ You can use as many `elif` statements as needed.
 
 ---
 
-Here’s the **`while` Loops** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -2047,7 +2046,7 @@ To avoid infinite loops, always ensure the sentinel value is updated within the 
 
 ---
 
-Here’s the **`break`, `continue`, and `return`** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -2185,7 +2184,7 @@ print(result)
 
 ---
 
-Here’s the Practice: Control Statements and Looping section formatted for inclusion in your README file:
+
 Practice: Control Statements and Looping
 
 This section provides examples and exercises for mastering Python's control statements (if, else, elif) and looping constructs (for, while, break, continue, return).
@@ -2455,7 +2454,6 @@ To ensure your code can be reused and shared, save it into project files. By doi
 ---
 
 
-Here’s the **How to Run Python Programs** section formatted for inclusion in your README file:
 
 ---
 
@@ -2576,7 +2574,7 @@ This also works in the VS Code terminal.
 
 ---
 
-Here’s the **Printing Tips** section formatted for inclusion in your README file:
+
 
 ---
 
@@ -2740,7 +2738,6 @@ pprint(long_list)
 
 --- 
 
-Here’s the **The `main` Method** section formatted for inclusion in your README file:
 
 ---
 
@@ -2874,7 +2871,6 @@ No unintended output from `name_lib.py` appears.
 
 ---
 
-Here’s the **Working With Files** section formatted for inclusion in your README file:
 
 ---
 
@@ -2981,7 +2977,7 @@ The `json.load()` function parses the JSON data into Python objects, such as lis
 - Always close files using `.close()` or, better yet, use a context manager (`with` statement) to handle file operations safely.
 - Use the `json` module for working with JSON files.
 
-Here’s the **Practice: Running Code** section formatted for inclusion in your README file:
+
 
 ---
 
