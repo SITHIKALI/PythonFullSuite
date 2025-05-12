@@ -1,0 +1,31 @@
+Here are the selected and refined project ideas:
+
+---
+
+### **2. Duplicate File Remover + Email Scam File Remover (Merged Project)**
+- **Purpose:** Scan folders to find and remove duplicate or scam/phishing files.
+- **Why It Matters:** Cleans up storage and prevents exposure to harmful files.
+- **Tech Stack:** Python, file hashing (MD5/perceptual), regex, email pattern analysis
+
+---
+
+### **9. Illegal Telegram Group Detector**
+- **Purpose:** Detect and remove Telegram groups sharing 18+ or illegal content.
+- **Why It Matters:** Helps clean up online platforms and improve user safety.
+- **Tech Stack:** Python, Telegram API, keyword filtering, ML-based content classification, automation scripts
+
+---
+
+### **10. MindTag – Emotion-Aware File Tagging System** *(Unique Idea)*
+- **Purpose:** Auto-tag your files (images, voice, text) with emotional/contextual metadata.
+- **Why It Matters:** Helps in personal memory management and mental health reflection.
+- **Tech Stack:** Python, sentiment analysis (Transformers/TextBlob), DeepFace, audio tone analysis, SQLite or JSON for indexing
+
+---
+
+### **11. Automatic Screen Disguise System** *(Unique Idea)*
+- **Purpose:** Detect someone behind you and blur/lock/switch your screen.
+- **Why It Matters:** Prevents shoulder surfing in public spaces.
+- **Tech Stack:** Python, OpenCV + face detection (MediaPipe/DeepFace), pyautogui, optional Bluetooth proximity detection
+
+---
