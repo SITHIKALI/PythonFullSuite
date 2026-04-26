@@ -1,6 +1,6 @@
 # Python Notes
 
-Welcome to the Python Notes! This guide is broken down into several sections for easier reading and navigation.
+Welcome to the Python Notes! 
 
 ## Table of Contents
 - [01 Basics and Strings](01_Basics_and_Strings.md)
