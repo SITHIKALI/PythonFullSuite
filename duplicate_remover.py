@@ -6,7 +6,79 @@ import re
 import shutil
 from collections import defaultdict
 import tkinter as tk
-from tkinter import filedialog, messagebox, scrolledtext
+from tkinter import filedialog, messagebox, scrolledtext, ttk
+
+# Theme configuration
+THEMES = {
+    'light': {
+        'bg': '#ffffff',
+        'fg': '#000000',
+        'select_bg': '#0078d4',
+        'select_fg': '#ffffff',
+        'button_bg': '#f0f0f0',
+        'button_fg': '#000000',
+        'entry_bg': '#ffffff',
+        'entry_fg': '#000000',
+        'text_bg': '#ffffff',
+        'text_fg': '#000000',
+        'frame_bg': '#f0f0f0'
+    },
+    'dark': {
+        'bg': '#2d2d2d',
+        'fg': '#ffffff',
+        'select_bg': '#404040',
+        'select_fg': '#ffffff',
+        'button_bg': '#404040',
+        'button_fg': '#ffffff',
+        'entry_bg': '#404040',
+        'entry_fg': '#ffffff',
+        'text_bg': '#1e1e1e',
+        'text_fg': '#ffffff',
+        'frame_bg': '#2d2d2d'
+    }
+}
+
+# Global theme variable
+current_theme = 'light'
+
+def apply_theme(widget, theme_name):
+    """Apply theme colors to a widget and its children"""
+    theme = THEMES[theme_name]
+    
+    # Apply theme to the widget itself
+    try:
+        if isinstance(widget, tk.Tk) or isinstance(widget, tk.Toplevel):
+            widget.configure(bg=theme['bg'])
+        elif isinstance(widget, tk.Frame):
+            widget.configure(bg=theme['frame_bg'])
+        elif isinstance(widget, tk.Button):
+            widget.configure(bg=theme['button_bg'], fg=theme['button_fg'], 
+                           activebackground=theme['select_bg'], activeforeground=theme['select_fg'])
+        elif isinstance(widget, tk.Entry):
+            widget.configure(bg=theme['entry_bg'], fg=theme['entry_fg'], 
+                           insertbackground=theme['entry_fg'])
+        elif isinstance(widget, tk.Checkbutton):
+            widget.configure(bg=theme['frame_bg'], fg=theme['fg'], 
+                           activebackground=theme['frame_bg'], activeforeground=theme['fg'],
+                           selectcolor=theme['entry_bg'])
+        elif isinstance(widget, scrolledtext.ScrolledText):
+            widget.configure(bg=theme['text_bg'], fg=theme['text_fg'], 
+                           insertbackground=theme['text_fg'])
+    except tk.TclError:
+        pass  # Some widgets may not support all options
+    
+    # Apply theme to all children
+    for child in widget.winfo_children():
+        apply_theme(child, theme_name)
+
+def toggle_theme():
+    """Toggle between light and dark theme"""
+    global current_theme
+    current_theme = 'dark' if current_theme == 'light' else 'light'
+    apply_theme(root, current_theme)
+    
+    # Update theme button text
+    theme_button.configure(text=f"Switch to {'Light' if current_theme == 'dark' else 'Dark'} Mode")
 
 # Step 1: Generate MD5 hash of a file to detect duplicates
 def get_file_hash(file_path):
@@ -131,32 +203,57 @@ def run_scan():
         output_text.insert(tk.END, "\n[INFO] No scam files found.")
 
 # Step 6: Launch GUI
-root = tk.Tk()
-root.title("Duplicate & Scam File Remover")
-root.geometry("700x550")
+def main():
+    global root, theme_button, entry, browse_btn, auto_delete_checkbox, scan_btn, output_text
+    global folder_var, auto_action_var
+    
+    root = tk.Tk()
+    root.title("Duplicate & Scam File Remover")
+    root.geometry("700x600")
 
-folder_var = tk.StringVar()
-auto_action_var = tk.BooleanVar()
+    folder_var = tk.StringVar()
+    auto_action_var = tk.BooleanVar()
 
-frame = tk.Frame(root)
-frame.pack(pady=10)
+    # Create main frame
+    main_frame = tk.Frame(root)
+    main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-entry = tk.Entry(frame, textvariable=folder_var, width=60)
-entry.pack(side=tk.LEFT, padx=5)
+    # Theme switcher button
+    theme_frame = tk.Frame(main_frame)
+    theme_frame.pack(fill=tk.X, pady=(0, 10))
 
-browse_btn = tk.Button(frame, text="Browse", command=browse_folder)
-browse_btn.pack(side=tk.LEFT)
+    theme_button = tk.Button(theme_frame, text="Switch to Dark Mode", command=toggle_theme)
+    theme_button.pack(side=tk.RIGHT)
 
-options_frame = tk.Frame(root)
-options_frame.pack(pady=5)
+    # Folder selection frame
+    folder_frame = tk.Frame(main_frame)
+    folder_frame.pack(fill=tk.X, pady=(0, 10))
 
-auto_delete_checkbox = tk.Checkbutton(options_frame, text="Auto-Delete/Move Files", variable=auto_action_var)
-auto_delete_checkbox.pack()
+    entry = tk.Entry(folder_frame, textvariable=folder_var, width=60)
+    entry.pack(side=tk.LEFT, padx=(0, 5), fill=tk.X, expand=True)
 
-scan_btn = tk.Button(root, text="Scan Now", command=run_scan)
-scan_btn.pack(pady=10)
+    browse_btn = tk.Button(folder_frame, text="Browse", command=browse_folder)
+    browse_btn.pack(side=tk.RIGHT)
 
-output_text = scrolledtext.ScrolledText(root, width=80, height=20)
-output_text.pack(pady=10)
+    # Options frame
+    options_frame = tk.Frame(main_frame)
+    options_frame.pack(fill=tk.X, pady=(0, 10))
 
-root.mainloop()
+    auto_delete_checkbox = tk.Checkbutton(options_frame, text="Auto-Delete/Move Files", variable=auto_action_var)
+    auto_delete_checkbox.pack(side=tk.LEFT)
+
+    # Scan button
+    scan_btn = tk.Button(main_frame, text="Scan Now", command=run_scan)
+    scan_btn.pack(pady=(0, 10))
+
+    # Output text area
+    output_text = scrolledtext.ScrolledText(main_frame, width=80, height=20)
+    output_text.pack(fill=tk.BOTH, expand=True)
+
+    # Apply initial theme
+    apply_theme(root, current_theme)
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
